@@ -1,6 +1,7 @@
 ## Supermarket List API
 
 API in Node.js using Express and Mongoose to connect a MongoDB DataBase
+
 The main objective  is to make life easier for application users who go to the supermarket and forget the items they went to buy.
 So this API aims to organize this shopping list.
 
@@ -42,7 +43,11 @@ npm install
 npm run start:dev
 ```
 
-## Available endpoints
+### Important Rule
+
+Is necessary send the username at the requisition header
+
+### Available endpoints
 
 -[GET]/list-item  
 

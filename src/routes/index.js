@@ -7,8 +7,14 @@ router.get("/", (req, res) => {
 });
 
 router.get("/list-item", async (req, res) => {
-  const items = await ListItem.find();
   try {
+    const { username } = req.headers;
+    if(!username) {
+      return res.status(401).json({ error: 'Username is required'})
+    }
+    const items = await ListItem.find({
+      username,
+    });
     return res.json(items);
   } catch (error) {
     return res.status(400).json({ error });
@@ -17,6 +23,10 @@ router.get("/list-item", async (req, res) => {
 
 router.post("/list-item", async (req, res) => {
   try {
+    const { username } = req.headers;
+    if(!username) {
+      return res.status(401).json({ error: 'Username is required'})
+    }
     const { name, quantity, checked } = req.body;
     if (!name || name.length < 3) {
       return res.status(400).json({
@@ -34,6 +44,7 @@ router.post("/list-item", async (req, res) => {
       name,
       quantity,
       checked: checked || false,
+      username,
     });
     return res.json(newItem);
   } catch (error) {
@@ -45,7 +56,7 @@ router.delete("/list-item/:id", async (req, res) => {
   try {
     const id = req.params.id;
     if (!id) {
-      return res.status(400).json({ error: "Id is manndatory" });
+      return res.status(400).json({ error: "Id is mandatory" });
     }
 
     const listItemDeleted = await ListItem.findByIdAndDelete(id);
